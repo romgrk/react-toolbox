@@ -11,6 +11,7 @@ const factory = (FontIcon) => {
       className: PropTypes.string,
       defaultValue: PropTypes.string,
       disabled: PropTypes.bool,
+      element: PropTypes.object,
       error: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.node,
@@ -166,7 +167,7 @@ const factory = (FontIcon) => {
     render() {
       const { children, defaultValue, disabled, error, floating, hint, icon,
               name, label: labelText, maxLength, multiline, required,
-              theme, type, value, onKeyPress, rows = 1, ...others } = this.props;
+              theme, type, value, onKeyPress, element, rows = 1, ...others } = this.props;
       const length = maxLength && value ? value.length : 0;
       const labelClassName = classnames(theme.label, { [theme.fixed]: !floating });
 
@@ -199,6 +200,10 @@ const factory = (FontIcon) => {
         inputElementProps.rows = rows;
         inputElementProps.onKeyPress = this.handleKeyPress;
       }
+
+      const inputElement = element
+        ? React.cloneElement(element, inputElementProps)
+        : React.createElement(multiline ? 'textarea' : 'input', inputElementProps)
 
       return (
         <div data-react-toolbox="input" className={className}>
